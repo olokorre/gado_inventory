@@ -7,4 +7,4 @@ db = mysql.connector.connect(user = config('USER_DB'), passwd = config('PASSWD_D
 sql = db.cursor()
 app.config.from_object('config')
 
-from .routes import index
+from .routes import index, users
