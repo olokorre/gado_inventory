@@ -5,7 +5,7 @@ from ..controllers import user_controller
 @app.route('/users', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def users():
     if request.method == 'GET':
-        return "Tudo em ordem!"
+        return user_controller.get_user()
     elif request.method == "POST":
         return user_controller.post_user()
     else:

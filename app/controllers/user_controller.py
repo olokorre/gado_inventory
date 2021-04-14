@@ -1,6 +1,24 @@
 from app import app
 from flask import request
 
+def get_user():
+    try:
+        nick = request.form['nick']
+        passwd = request.form['passwd']
+        # Validação do usuário
+        return {
+            "message": "você foi autenticado!",
+            "user_info": {
+                "name": "--nome--",
+                "nick": nick,
+                "passwd": passwd
+            }
+        }
+    except:
+        return {
+            "message": "Os campos 'nick' e 'passwd' são obrigatórios!"
+        }, 400
+
 def post_user():
     try:
         name = request.form['name']
