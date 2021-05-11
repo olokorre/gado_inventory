@@ -133,5 +133,6 @@ dmypy.json
 bin/
 lib/
 lib64/
+lib64
 include/
 *.cfg
