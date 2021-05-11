@@ -8,3 +8,4 @@ sql = db.cursor()
 app.config.from_object('config')
 
 from .routes import index, users
+from .database import crud, user_repository

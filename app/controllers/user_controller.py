@@ -1,5 +1,8 @@
 from app import app
+from ..database import user_repository
 from flask import request
+
+User = user_repository.UserRepository()
 
 def get_user():
     try:
@@ -20,19 +23,16 @@ def get_user():
         }, 400
 
 def post_user():
-    try:
-        name = request.form['name']
-        nick = request.form['nick']
-        passwd = request.form['passwd']
-        return {
-            "message": "Seu usuário foi criado!",
-            "user_info": {
-                "name": name,
-                "nick": nick,
-                "passwd": passwd
-            }
-        }, 200
-    except:
-        return {
-            "message": "Os parámetros 'name', 'nick' e 'passwd' são obrigatórios!"
-        }, 400
+    # try:
+    data = []
+    data.append(request.form['name'])
+    data.append(request.form['passwd'])
+    data.append(request.form['email'])
+    User.create(data)
+    return {
+        "message": "Seu usuário foi criado!",
+    }, 200
+    # except:
+    #     return {
+    #         "message": "Os parámetros 'name', 'nick' e 'passwd' são obrigatórios!"
+    #     }, 400
