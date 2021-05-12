@@ -36,3 +36,18 @@ def post_user():
     #     return {
     #         "message": "Os parámetros 'name', 'nick' e 'passwd' são obrigatórios!"
     #     }, 400
+
+def update_user(id):
+    # try:
+    data = []
+    data.append(request.form['name'])
+    data.append(request.form['passwd'])
+    data.append(request.form['email'])
+    User.update(id, data)
+    return {
+        "message": "Seu usuário foi atualizado!",
+    }, 200
+    # except:
+    #     return {
+    #         "message": "Os parámetros 'name', 'nick' e 'passwd' são obrigatórios!"
+    #     }, 400

@@ -15,6 +15,14 @@ class Crud(object):
             else: insert += '"' + d + '"'
             if data[-1] != d: insert += ','
         insert += ')'
-        print(insert)
         sql.execute(insert)
+        db.commit()
+    
+    def update(self, id, data):
+        update = 'update ' + self.table + ' set '
+        for i in range(len(self.filables)):
+            update += self.filables[i] + ' = "' + data[i] + '"'
+            if i != len(self.filables)  - 1: update += ', '
+        update += ' where id = ' + id
+        sql.execute(update)
         db.commit()
