@@ -28,14 +28,29 @@ def post_user():
     data.append(request.form['name'])
     data.append(request.form['passwd'])
     data.append(request.form['email'])
-    User.create(data)
+    user = User.create(data)
     return {
         "message": "Seu usuário foi criado!",
-    }, 200
+        "data": {
+            "id": user[0],
+            "name": user[1],
+            "email": user[2]
+        }
+    }, 201
     # except:
     #     return {
     #         "message": "Os parámetros 'name', 'nick' e 'passwd' são obrigatórios!"
     #     }, 400
+
+def read(id):
+    user = User.read(id)
+    return {
+        "message": "Aqui esta os dados do usuário:",
+        "data": {
+            "name": user[1],
+            "email": user[2],
+        }
+    }, 200
 
 def update_user(id):
     # try:
@@ -43,9 +58,13 @@ def update_user(id):
     data.append(request.form['name'])
     data.append(request.form['passwd'])
     data.append(request.form['email'])
-    User.update(id, data)
+    user = User.update(id, data)
     return {
         "message": "Seu usuário foi atualizado!",
+        "data": {
+            "name": user[1],
+            "email": user[2],
+        }
     }, 200
     # except:
     #     return {

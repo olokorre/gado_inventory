@@ -17,7 +17,15 @@ class Crud(object):
         insert += ')'
         sql.execute(insert)
         db.commit()
+        sql.execute('select * from ' + self.table)
+        return sql.fetchall()[-1]
     
+    def read(self, id):
+        read = 'select * from ' + self.table + ' where id = ' + id
+        sql.execute(read)
+        data = sql.fetchone()
+        return data
+
     def update(self, id, data):
         update = 'update ' + self.table + ' set '
         for i in range(len(self.filables)):
@@ -26,3 +34,5 @@ class Crud(object):
         update += ' where id = ' + id
         sql.execute(update)
         db.commit()
+        sql.execute('select * from ' + self.table + ' where id = ' + id)
+        return sql.fetchone()
