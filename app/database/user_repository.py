@@ -8,3 +8,8 @@ class UserRepository(crud.Crud):
         'passwd',
         'email',
     ]
+    visible = [
+        'name',
+        'email',
+        'id',
+    ]

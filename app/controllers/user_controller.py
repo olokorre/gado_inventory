@@ -5,23 +5,11 @@ from flask import request
 User = user_repository.UserRepository()
 
 def get_user():
-    try:
-        nick = request.form['nick']
-        passwd = request.form['passwd']
-        # Validação do usuário
-        return {
-            "message": "você foi autenticado!",
-            "user_info": {
-                "name": "--nome--",
-                "nick": nick,
-                "passwd": passwd
-            }
-        }
-    except:
-        return {
-            "message": "Os campos 'nick' e 'passwd' são obrigatórios!"
-        }, 400
-
+    users = User.get_all()
+    return {
+        "message": "você foi autenticado!",
+        "users": users,
+    }
 def post_user():
     # try:
     data = []
@@ -31,11 +19,7 @@ def post_user():
     user = User.create(data)
     return {
         "message": "Seu usuário foi criado!",
-        "data": {
-            "id": user[0],
-            "name": user[1],
-            "email": user[2]
-        }
+        "user": user,
     }, 201
     # except:
     #     return {
@@ -46,10 +30,7 @@ def read(id):
     user = User.read(id)
     return {
         "message": "Aqui esta os dados do usuário:",
-        "data": {
-            "name": user[1],
-            "email": user[2],
-        }
+        "user": user,
     }, 200
 
 def update_user(id):
@@ -61,12 +42,15 @@ def update_user(id):
     user = User.update(id, data)
     return {
         "message": "Seu usuário foi atualizado!",
-        "data": {
-            "name": user[1],
-            "email": user[2],
-        }
+        "user": user,
     }, 200
     # except:
     #     return {
     #         "message": "Os parámetros 'name', 'nick' e 'passwd' são obrigatórios!"
     #     }, 400
+
+def delete(id):
+    User.delete(id)
+    return {
+        "message": "ok",
+    }, 200
