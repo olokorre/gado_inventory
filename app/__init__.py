@@ -7,5 +7,5 @@ db = mysql.connector.connect(user = config('USER_DB'), passwd = config('PASSWD_D
 sql = db.cursor()
 app.config.from_object('config')
 
-from .routes import index, users
-from .database import crud, user_repository
+from .routes import index, users, pessoas
+from .database import crud, user_repository, pessoas_repository

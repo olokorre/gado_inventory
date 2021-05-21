@@ -5,6 +5,17 @@ class Crud(object):
     filables = []
     visible = []
 
+    def json_list(self, json, columns):
+        print(json)
+        response = []
+        for i in range(len(columns)): response.append(json[columns[i]])
+        return response
+    
+    def list_json(self, list, columns):
+        json = {}
+        for i in range(len(columns)): json[columns[i]] = list[i]
+        return json
+
     def make_string(self, columns):
         string = ''
         for i in columns:
@@ -13,6 +24,7 @@ class Crud(object):
         return string
 
     def create(self, data):
+        data = self.json_list(data, self.filables)
         insert = 'insert into ' + self.table + ' ('
         for filable in self.filables:
             insert += filable
@@ -25,12 +37,12 @@ class Crud(object):
         insert += ')'
         sql.execute(insert)
         db.commit()
-        sql.execute('select * from ' + self.table)
-        return sql.fetchall()[-1]
+        sql.execute('select %s from %s' %(self.make_string(self.visible), self.table))
+        return self.list_json(sql.fetchall()[-1], self.visible)
     
     def read(self, id):
         sql.execute('select %s from %s where id = %s' %(self.make_string(self.visible), self.table, id))
-        return sql.fetchone()
+        return self.list_json(sql.fetchone(), self.visible)
 
     def update(self, id, data):
         update = 'update ' + self.table + ' set '
@@ -41,11 +53,13 @@ class Crud(object):
         sql.execute(update)
         db.commit()
         sql.execute('select %s from %s where id = %s' %(self.make_string(self.visible), self.table, id))
-        return sql.fetchone()
+        return self.list_json(sql.fetchone(), self.visible)
     
     def get_all(self):
         sql.execute('select %s from %s' %(self.make_string(self.visible), self.table))
-        return sql.fetchall()
+        response = []
+        for i in sql.fetchall(): response.append(self.list_json(i, self.visible))
+        return response
     
     def delete(self, id):
         sql.execute('delete from %s where id = %s' %(self.table, id))
