@@ -6,7 +6,6 @@ class Crud(object):
     visible = []
 
     def json_list(self, json, columns):
-        print(json)
         response = []
         for i in range(len(columns)): response.append(json[columns[i]])
         return response
@@ -46,10 +45,10 @@ class Crud(object):
 
     def update(self, id, data):
         update = 'update ' + self.table + ' set '
-        for i in range(len(self.filables)):
-            update += self.filables[i] + ' = "' + data[i] + '"'
-            if i != len(self.filables)  - 1: update += ', '
-        update += ' where id = ' + id
+        for i in self.filables:
+            update += i + ' = "' + data[i] + '"'
+            if i != self.filables[- 1]: update += ', '
+        update += ' where id = ' + str(id)
         sql.execute(update)
         db.commit()
         sql.execute('select %s from %s where id = %s' %(self.make_string(self.visible), self.table, id))
@@ -63,4 +62,5 @@ class Crud(object):
     
     def delete(self, id):
         sql.execute('delete from %s where id = %s' %(self.table, id))
+        db.commit()
         return None
